@@ -1,0 +1,46 @@
+# Maintainer: Anil Beesetti <anilbeesetti10@garudalinux.org>
+
+pkgname=arctic-hooks
+pkgdesc="Additions and enhancements for ArcticOS Linux"
+pkgver=21.11
+pkgrel=1
+arch=('any')
+license=('GPL')
+depends=('pacman' 'pacman-contrib' 'chaotic-mirrorlist' 'grub')
+
+source=(arctic-hooks-runner
+        arctic-hooks-update.hook
+        just-reboot.hook
+        lsb-release.hook
+        grub-update.hook
+        os-release.hook
+        90-mkinitcpio-install.hook
+        zzz_pacman-sync.hook)
+
+md5sums=('2d941818f53c7aa25f5704c66df62a71'
+         '1628178cd54d2ec6b1d7dbef7a0f16d1'
+         '8cc1fd1079bbf2fdb17571c5f3194ba8'
+         '5a0029a560a87616c27c27fb36fb41f8'
+         'f88e56c28098385d8d74c5f9309570bb'
+         '9396a9b1a8e9ed8e15383f2de7da13a9'
+         '7d10f1fa887fba72ec0919862814e178'
+         '5cb67c68d6645e46ff4174370d685823')
+
+package() {
+  cd $srcdir
+
+  install -d $pkgdir/usr/share/libalpm/hooks
+  install -Dm644 arctic-hooks-update.hook $pkgdir/usr/share/libalpm/hooks/arctic-hooks-update.hook
+  install -Dm644 just-reboot.hook $pkgdir/usr/share/libalpm/hooks/just-reboot.hook
+  install -Dm644 lsb-release.hook $pkgdir/usr/share/libalpm/hooks/lsb-release.hook
+  install -Dm644 grub-update.hook $pkgdir/usr/share/libalpm/hooks/99-grub-update.hook
+  install -Dm644 os-release.hook $pkgdir/usr/share/libalpm/hooks/os-release.hook
+  install -Dm644 zzz_pacman-sync.hook $pkgdir/usr/share/libalpm/hooks/zzz_pacman-sync.hook
+  
+  install -d $pkgdir/etc/pacman.d/hooks
+  install -Dm644 90-mkinitcpio-install.hook $pkgdir/etc/pacman.d/hooks/90-mkinitcpio-install.hook
+
+  install -d $pkgdir/usr/share/libalpm/scripts
+  install -Dm755 arctic-hooks-runner $pkgdir/usr/share/libalpm/scripts/arctic-hooks-runner
+}
+
